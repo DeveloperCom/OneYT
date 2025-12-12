@@ -25,6 +25,8 @@ export default function Home() {
   const [videoInfo, setVideoInfo] = useState<VideoInfo | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL!
+
   // Extract video ID from URL
   const extractVideoId = (inputUrl: string): string | null => {
     try {
@@ -62,7 +64,7 @@ export default function Home() {
     setVideoInfo(null);
 
     try {
-      const response = await fetch(`/api/info?id=${encodeURIComponent(videoId)}&downloadType=${downloadType}`);
+      const response = await fetch(`${API_URL}/info?id=${encodeURIComponent(videoId)}&downloadType=${downloadType}`);
       const data = await response.json();
 
       if (!response.ok || !data.success) {
@@ -81,7 +83,7 @@ export default function Home() {
     setIsDownloading(true);
 
     // Trigger download using token
-    window.location.href = `/api/download?token=${encodeURIComponent(token)}`;
+    window.location.href = `${API_URL}/download?token=${encodeURIComponent(token)}`;
 
     // Reset downloading state after delay
     setTimeout(() => {
